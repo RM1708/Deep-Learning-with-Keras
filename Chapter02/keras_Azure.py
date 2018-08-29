@@ -1,3 +1,9 @@
+'''
+Installing Keras on Microsoft Azure
+
+Gulli, Antonio. Deep Learning with Keras: Implementing deep learning 
+... (Kindle Locations 882-883). Packt Publishing. Kindle Edition. 
+'''
 # The script MUST contain a function named azureml_main
 # which is the entry point for this module.
 

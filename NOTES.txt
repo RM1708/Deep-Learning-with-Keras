@@ -1,0 +1,11 @@
+
+../anaconda3/envs/tensorflow/lib/python3.6/site-packages/keras/utils/data_utils.py
+---------------------------------------------------------------------------------------
+* Download files (just what I was looking for)
+    * to cache if a dir not specified
+    * only if file not already present.
+    * create directory if not present
+    
+../anaconda3/envs/tensorflow/lib/python3.6/site-packages/keras_applications/vgg16.py
+------------------------------------------------------------------------------------
+* Great example of function documentation.

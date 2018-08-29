@@ -1,3 +1,6 @@
+'''
+
+'''
 from __future__ import print_function
 import numpy as np
 from keras.datasets import mnist
@@ -22,10 +25,10 @@ VALIDATION_SPLIT=0.2 # how much TRAIN is reserved for VALIDATION
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
 
 #X_train is 60000 rows of 28x28 values --> reshaped in 60000 x 784
-RESHAPED = 784
+PIXELS_PER_IMAGE = 784
 #
-X_train = X_train.reshape(60000, RESHAPED)
-X_test = X_test.reshape(10000, RESHAPED)
+X_train = X_train.reshape(60000, PIXELS_PER_IMAGE)
+X_test = X_test.reshape(10000, PIXELS_PER_IMAGE)
 X_train = X_train.astype('float32')
 X_test = X_test.astype('float32')
 
@@ -44,7 +47,7 @@ Y_test = np_utils.to_categorical(y_test, NB_CLASSES)
 # final stage is softmax
 
 model = Sequential()
-model.add(Dense(NB_CLASSES, input_shape=(RESHAPED,)))
+model.add(Dense(NB_CLASSES, input_shape=(PIXELS_PER_IMAGE,)))
 model.add(Activation('softmax'))
 
 model.summary()

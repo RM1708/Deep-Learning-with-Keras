@@ -1,3 +1,20 @@
+'''
+Chapter03: LeNet code in Keras
+
+Gulli, Antonio. Deep Learning with Keras: Implementing deep learning models 
+... (Kindle Locations 1181-1182). Packt Publishing. Kindle Edition. 
+
+env tensorflow: OKAY
+env OpenCV:
+env keras:
+
+@COMMENTS:
+    1.
+        Test score: 0.02814070872500888
+        Test accuracy: 0.9901
+        dict_keys(['val_loss', 'val_acc', 'loss', 'acc'])
+
+'''
 # import the necessary packages
 from keras import backend as K
 from keras.models import Sequential
@@ -41,7 +58,7 @@ class LeNet:
 		return model
 
 # network and training
-NB_EPOCH = 20
+NB_EPOCH = 5  #20
 BATCH_SIZE = 128
 VERBOSE = 1
 OPTIMIZER = Adam()
@@ -65,6 +82,7 @@ X_test /= 255
 X_train = X_train[:, np.newaxis, :, :]
 X_test = X_test[:, np.newaxis, :, :]
 
+print("Classifier for MNIST Data")
 print(X_train.shape[0], 'train samples')
 print(X_test.shape[0], 'test samples')
 
@@ -103,3 +121,5 @@ plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
 plt.show()
+
+print("\n\tDONE: ", __file__)

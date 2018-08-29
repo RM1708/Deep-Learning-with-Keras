@@ -8,11 +8,11 @@ All of the code is organized into folders. Each folder starts with a number foll
 
 
 The code will look like the following:
-```
-from keras.models import Sequential
-model = Sequential()
-model.add(Dense(12, input_dim=8, kernel_initializer='random_uniform'))
-```
+
+        from keras.models import Sequential
+        model = Sequential()
+        model.add(Dense(12, input_dim=8, kernel_initializer='random_uniform'))
+
 
 To be able to smoothly follow through the chapters, you will need the following pieces of software:
 
