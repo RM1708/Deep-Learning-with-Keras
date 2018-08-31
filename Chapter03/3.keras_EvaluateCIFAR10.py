@@ -37,9 +37,10 @@ print("Pre-Processing ...")
 #                     (1, 0, 2)).astype('float32')
 #           for img_name in img_names]
 #
-# The above single nested statement has been unrolled below.
+# NOTE: The above single nested statement has been unrolled below.
 # This has been done for ease of understanding and performing needed
 # surgery.
+#
 imgs = [scipy.misc.imread(img_name) for img_name in img_names]
 #imgs = scipy.misc.imresize(imgs,  (32, 32))
 imgs = np.asarray(imgs)
@@ -60,6 +61,7 @@ category_image_0 = model.predict_classes([np.expand_dims(imgs[0],axis=0)])
 print("category_image_0: ",category_image_0)
 category_image_1 = model.predict_classes([np.expand_dims(imgs[1],axis=0)])
 print("category_image_1: ",category_image_1)
+
 '''
 see https://www.cs.toronto.edu/~kriz/cifar.html
 prediction_0:  [9] # This is the category for trucks:-D

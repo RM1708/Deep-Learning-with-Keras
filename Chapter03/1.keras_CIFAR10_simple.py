@@ -87,6 +87,8 @@ from keras.optimizers import SGD, Adam, RMSprop
 
 import matplotlib.pyplot as plt
 
+from datetime import datetime
+
 #from quiver_engine import server
 # CIFAR_10 is a set of 60K images 32x32 pixels on 3 channels
 IMG_CHANNELS = 3
@@ -99,10 +101,19 @@ NB_EPOCH = 20        #Original 20
 NB_CLASSES = 10
 VERBOSE = 1
 VALIDATION_SPLIT = 0.2
-OPTIM = RMSprop()
-#OPTIM = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
 
-print("\n\tRecognizing CIFAR-10 images ...\n")
+OPTIM_SEL = "ADAM" # "RMS", "SGD", "ADAM"
+if("SGD" == OPTIM_SEL):
+    OPTIM = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+elif("ADAM" == OPTIM_SEL):
+    OPTIM = Adam()   
+else:
+    OPTIM = RMSprop()
+
+
+print("\n\tStart time: ", datetime.time(datetime.now()), "\n")
+
+print("\n\tLoading CIFAR-10 images ...\n")
 
 #load dataset
 (X_train, y_train), (X_test, y_test) = cifar10.load_data()
@@ -163,6 +174,7 @@ model.add(Dropout(0.25))
 model.add(Flatten())
 model.add(Dense(512))
 model.add(Activation('relu'))
+
 model.add(Dropout(0.5))
 model.add(Dense(NB_CLASSES))
 model.add(Activation('softmax'))
@@ -171,6 +183,8 @@ model.summary()
 
 
 # train
+print("Optimizer to be used: ", OPTIM_SEL )
+
 print("\nCompiling model ...")
 model.compile(loss='categorical_crossentropy', optimizer=OPTIM,
 	metrics=['accuracy'])
@@ -213,5 +227,7 @@ plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
 plt.show()
+
+print("\n\tEnd time: ", datetime.time(datetime.now()), "\n")
 
 print("\n\tDONE: ", __file__)
