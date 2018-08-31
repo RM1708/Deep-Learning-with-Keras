@@ -20,17 +20,57 @@ from keras.optimizers import SGD
 
 from skimage import transform
 
+from datetime import datetime
+
+print("Start Time: ", datetime.time(datetime.now()))
+
 #load model
+USE_MODEL_CREATED_BY_CIFAR_V1 = True
+USE_AUGMENTED_MODEL = True
 print("Loading model weights ...")
-model_architecture = 'cifar10_architecture.json'
-model_weights = 'cifar10_weights.h5'
+if(not USE_MODEL_CREATED_BY_CIFAR_V1):
+    #Load model & wts created by 1.keras_CIFAR10_simple.py
+    model_architecture = 'cifar10_architecture.json'
+    model_weights = 'cifar10_weights.h5'
+    exit_msg = "model & wts created by 1.keras_CIFAR10_simple.py"
+else:
+    if(USE_AUGMENTED_MODEL):
+        #Load model &weights created by 2.keras_CIFAR10_V1.py with USE_AUGMENTED_MODEL
+        #set to True
+        model_architecture = 'cifar10_architecture_augmented_data.json'
+        model_weights = 'cifar10_weights_augmented_data.h5'
+        exit_msg = "model & weights created by 2.keras_CIFAR10_V1.py with USE_AUGMENTED_MODEL set to True"
+    else:
+        #Load model & weights created by 2.keras_CIFAR10_V1.py with USE_AUGMENTED_MODEL
+        #set to False
+        model_architecture = 'cifar10_architecture_NOT_augmented_data.json'
+        model_weights = 'cifar10_weights_NOT_augmented_data.h5'
+        exit_msg = "model & weights created by 2.keras_CIFAR10_V1.py with USE_AUGMENTED_MODEL set to True"
+        
+        
 model = model_from_json(open(model_architecture).read())
 model.load_weights(model_weights)
 
 #load images
 print("Getting images to be classified ...")
-img_names = ['/home/rm/tmp/Images/cat_hiding_face.jpeg', \
-             '/home/rm/tmp/Images/dog_daschund.jpeg']
+img_names = [
+            '/home/rm/tmp/Images/cat_hiding_face.jpeg', \
+             #Above is good
+             #'/home/rm/tmp/Images/cat0.jpg', \
+             #Above is good
+             #'/home/rm/tmp/Images/cat01.jpg', \
+             #Above is ***not***good
+             #
+             '/home/rm/tmp/Images/dog_shepherd_down_2OClock.jpg'
+             #'/home/rm/tmp/Images/dog_girl_beach.jpeg'
+             #Above is ***not***good. Detected as Ship
+             #'/home/rm/tmp/Images/dog_german_shepherd_down.jpeg'
+             #Above is ***not***good. Detected as Bird
+             #'/home/rm/tmp/Images/dog_daschund.jpeg'
+             #Above is ***not***good. Detected as Deer
+             #'/home/rm/tmp/Images/yellow_lab_head_Horiz11_Oclock.jpg'
+             #Above is good
+             ]
 print("Pre-Processing ...")
 #imgs = [np.transpose(scipy.misc.imresize(scipy.misc.imread(img_name), \
 #                                         (32, 32)),
@@ -43,8 +83,12 @@ print("Pre-Processing ...")
 imgs = [scipy.misc.imread(img_name) for img_name in img_names]
 #imgs = scipy.misc.imresize(imgs,  (32, 32))
 imgs = np.asarray(imgs)
-imgs[0] = transform.resize(imgs[0],  (32, 32)) #returns float64
-imgs[1] = transform.resize(imgs[1],  (32, 32)) #returns float64
+imgs[0] = transform.resize(imgs[0],  \
+                            (32, 32), \
+                            anti_aliasing=True) #returns float64
+imgs[1] = transform.resize(imgs[1], \
+                            (32, 32), \
+                            anti_aliasing=True) #returns float64
 imgs[0] = np.transpose(imgs[0], (1, 0, 2)).astype('float32')
 imgs[1] = np.transpose(imgs[1], (1, 0, 2)).astype('float32')
 
@@ -62,9 +106,14 @@ category_image_1 = model.predict_classes([np.expand_dims(imgs[1],axis=0)])
 print("category_image_1: ",category_image_1)
 '''
 see https://www.cs.toronto.edu/~kriz/cifar.html
-prediction_0:  [9] # This is the category for trucks:-D
-prediction_1:  [7] # This one is for horses. :-D
+Expected: 
+    prediction_0: [3] - Cat
+    prediction_1: [5] - dog
+
+
 '''
 
-print("\n\tDONE: ", __file__)
+print("End Time: ", datetime.time(datetime.now()))
+
+print("\n\tDONE: ", __file__, "\nwith ", exit_msg )
 

@@ -2,8 +2,9 @@
 Improving the CIFAR-10 performance with deeper a network
 
 Gulli, Antonio. Deep Learning with Keras: Implementing deep learning 
-... (Kindle Locations 1310-1311). Packt Publishing. Kindle Edition. 
-env tensorflow: Goes into training. Stopped execution.
+... (Kindle Locations 1310-1311). Packt Publishing. Kindle Edition.
+ 
+env tensorflow: OKAY. Checked for 40 Epochs, with and without AUGMENTATION.
 env OpenCV:
 env keras:
 
@@ -96,7 +97,7 @@ model.compile(loss='categorical_crossentropy', optimizer=OPTIM,
 
 # train
 print("Training ...") 
-AUGMENTATION = False
+AUGMENTATION = True
 if(not AUGMENTATION):
     #https://www.tensorflow.org/api_docs/python/tf/keras/Sequential#fit
     history = model.fit(X_train, \
@@ -155,7 +156,9 @@ else:
 print(history.history.keys())
 # summarize history for accuracy
 plt.plot(history.history['acc'])
-plt.plot(history.history['val_acc'])
+if(not AUGMENTATION):
+    plt.plot(history.history['val_acc'])
+    
 plt.title('model accuracy')
 plt.ylabel('accuracy')
 plt.xlabel('epoch')
@@ -163,7 +166,9 @@ plt.legend(['train', 'test'], loc='upper left')
 plt.show()
 # summarize history for loss
 plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
+if(not AUGMENTATION):
+    plt.plot(history.history['val_loss'])
+    
 plt.title('model loss')
 plt.ylabel('loss')
 plt.xlabel('epoch')

@@ -87,6 +87,8 @@ from keras.optimizers import SGD, Adam, RMSprop
 
 import matplotlib.pyplot as plt
 
+from datetime import datetime
+
 #from quiver_engine import server
 # CIFAR_10 is a set of 60K images 32x32 pixels on 3 channels
 IMG_CHANNELS = 3
@@ -101,6 +103,8 @@ VERBOSE = 1
 VALIDATION_SPLIT = 0.2
 OPTIM = RMSprop()
 #OPTIM = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+
+print("Start Time: ", datetime.time(datetime.now()))
 
 print("\n\tRecognizing CIFAR-10 images ...\n")
 
@@ -213,5 +217,7 @@ plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
 plt.show()
+
+print("End Time: ", datetime.time(datetime.now()))
 
 print("\n\tDONE: ", __file__)
