@@ -2,8 +2,9 @@
 Improving the CIFAR-10 performance with deeper a network
 
 Gulli, Antonio. Deep Learning with Keras: Implementing deep learning 
-... (Kindle Locations 1310-1311). Packt Publishing. Kindle Edition. 
-env tensorflow: Goes into training. Stopped execution.
+... (Kindle Locations 1310-1311). Packt Publishing. Kindle Edition.
+ 
+env tensorflow: OKAY. Checked for 40 Epochs, with and without AUGMENTATION.
 env OpenCV:
 env keras:
 
@@ -12,6 +13,7 @@ env keras:
     2. The model is trained on unaugmented data. This is not as  shown in the
     book.
 '''
+
 from keras.preprocessing.image import ImageDataGenerator #(Kindle Locations 1331-1332). 
 from keras.datasets import cifar10
 from keras.utils import np_utils
@@ -37,6 +39,7 @@ NB_EPOCH =   40           #40
 NB_CLASSES = 10
 VERBOSE = 1
 VALIDATION_SPLIT = 0.2
+OPTIM = RMSprop()
 
 OPTIM_SEL = "ADAM" # "RMS", "SGD", "ADAM"
 if("SGD" == OPTIM_SEL):

@@ -101,6 +101,8 @@ NB_EPOCH = 20        #Original 20
 NB_CLASSES = 10
 VERBOSE = 1
 VALIDATION_SPLIT = 0.2
+OPTIM = RMSprop()
+#OPTIM = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
 
 OPTIM_SEL = "ADAM" # "RMS", "SGD", "ADAM"
 if("SGD" == OPTIM_SEL):
