@@ -3,6 +3,26 @@ See the chapter, "Recycling pre-built deep learning models for
                     extracting features"
     "Deep Learning with Keras: ...", by Gulli, Antonio. 
     (Kindle Locations 1424-1425). 
+"
+The key intuition is that, as the network learns to classify 
+images into categories, each layer learns to identify the 
+features that are necessary to do the final classification. 
+Lower layers identify lower order features such as color and edges, 
+and higher layers compose these lower order feature into higher 
+order features such as shapes or objects. Hence the intermediate 
+layer has the capability to extract important features from an 
+image, and these features are more likely to help in different 
+kinds of classification. This has multiple advantages. 
+    First, we can rely on publicly available large-scale training 
+    and transfer this learning to novel domains. 
+    Second, we can save time for expensive large training. 
+    Third, we can provide reasonable solutions even when we don't 
+    have a large number of training examples for our domain. 
+    We also get a good starting network shape for the task at hand, 
+    instead of guessing it.
+
+"
+
 
 env tensorflow: OK. See output below
 env OpenCV:
@@ -68,10 +88,11 @@ x = image.img_to_array(img)
 x = np.expand_dims(x, axis=0)
 x = preprocess_input(x)
 
-# get the features from this block
+# get the features from block4_pool block
 features = model.predict(x)
 print("\nShape of features computed at block4_pool stage of the model: ", \
       features.shape, "\n")
-print (features)
+print ("Slice [0, :5, :5, :5] of Features, computed at block4_pool stage of the model: \n", \
+       features[0, :5, :5, :5])
 
 print("\n\tDONE: ", __file__)

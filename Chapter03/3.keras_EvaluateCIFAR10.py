@@ -4,7 +4,9 @@ Predicting with CIFAR-10
 Gulli, Antonio. Deep Learning with Keras: Implementing deep learning 
 ... (Kindle Location 1358). Packt Publishing. Kindle Edition. 
 
-env tensorflow: OKAY. Though predictions are no good. See end of file
+env tensorflow: OKAY. Though predictions are not so good.
+                To be expected as the accuracy at the end of training is 
+                ~70%
 env OpenCV:
 env keras:
 
@@ -21,6 +23,11 @@ from keras.optimizers import SGD
 from skimage import transform
 
 from datetime import datetime
+
+#From https://github.com/gskielian/PNG-2-CIFAR10/blob/master/batches.meta.txt
+#The file at /home/rm/.keras/datasets/cifar-10-batches-py is in Chinese(Japanese?)
+cifar_10_classes = ["airplane", "automobile", "bird", "cat", "deer", \
+                    "dog", "frog", "horse", "ship", "truck"]
 
 print("Start Time: ", datetime.time(datetime.now()))
 
@@ -61,12 +68,12 @@ img_names = [
              #'/home/rm/tmp/Images/cat01.jpg', \
              #Above is ***not***good
              #
-             '/home/rm/tmp/Images/dog_shepherd_down_2OClock.jpg'
+             #'/home/rm/tmp/Images/dog_shepherd_down_2OClock.jpg'
              #'/home/rm/tmp/Images/dog_girl_beach.jpeg'
              #Above is ***not***good. Detected as Ship
              #'/home/rm/tmp/Images/dog_german_shepherd_down.jpeg'
              #Above is ***not***good. Detected as Bird
-             #'/home/rm/tmp/Images/dog_daschund.jpeg'
+             '/home/rm/tmp/Images/dog_daschund.jpeg'
              #Above is ***not***good. Detected as Deer
              #'/home/rm/tmp/Images/yellow_lab_head_Horiz11_Oclock.jpg'
              #Above is good
@@ -99,11 +106,45 @@ print("Compiling the model ...")
 optim = SGD()
 model.compile(loss='categorical_crossentropy', optimizer=optim,
 	metrics=['accuracy'])
-print("Estimating Category ...")
-category_image_0 = model.predict_classes([np.expand_dims(imgs[0],axis=0)])
-print("category_image_0: ",category_image_0)
-category_image_1 = model.predict_classes([np.expand_dims(imgs[1],axis=0)])
-print("category_image_1: ",category_image_1)
+
+print("\nEstimating Class of 1st Image ...")
+class_index_0 = model.predict_classes([np.expand_dims(imgs[0],\
+                                                         axis=0)])
+class_probabilities_0 = model.predict([np.expand_dims(imgs[0],\
+                                                      axis=0)])
+print("1st Image class name: ", cifar_10_classes[class_index_0[0]])
+
+zip_class_prob = zip(cifar_10_classes, \
+                     class_probabilities_0[0].tolist())
+list_class_prob = list(zip_class_prob)
+
+#Ref: Example 3 at https://www.programiz.com/python-programming/methods/built-in/sorted
+list_class_prob_sorted = sorted(list_class_prob, \
+                                key=lambda x: x[1], \
+                                reverse=True)
+print("Probable Class in descending order of Probability:")
+#Use comprehension for printing
+[print("Class: {}; Probability: {} ".format(list_class_prob_sorted[i][0], \
+       (int(list_class_prob_sorted[i][1] * 1.0E04)/1.0E04))) \
+     for i in range(10)]
+
+print("\nEstimating Class of 2nd Image ...")
+class_index_1 = model.predict_classes([np.expand_dims(imgs[1], \
+                                                         axis=0)])
+class_probabilities_1 = model.predict([np.expand_dims(imgs[1], \
+                                                      axis=0)])
+print("2nd Image class name: ",cifar_10_classes[class_index_1[0]])
+zip_class_prob = zip(cifar_10_classes, \
+                     class_probabilities_1[0].tolist())
+list_class_prob = list(zip_class_prob)
+list_class_prob_sorted = sorted(list_class_prob, \
+                                key=lambda x: x[1], \
+                                reverse=True)
+print("Probable Class in descending order of Probability:")
+[print("Class: {}; Probability: {} ".format(list_class_prob_sorted[i][0], \
+       (int(list_class_prob_sorted[i][1] * 1.0E04)/1.0E04))) \
+     for i in range(10)]
+
 '''
 see https://www.cs.toronto.edu/~kriz/cifar.html
 Expected: 
@@ -113,7 +154,7 @@ Expected:
 
 '''
 
-print("End Time: ", datetime.time(datetime.now()))
+print("\nEnd Time: ", datetime.time(datetime.now()))
 
-print("\n\tDONE: ", __file__, "\nwith ", exit_msg )
+print("\n\tDONE: ", __file__, "\n\n\twith ", exit_msg )
 

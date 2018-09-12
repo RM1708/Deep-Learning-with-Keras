@@ -4,7 +4,7 @@ Sub-Chapter: Recognizing CIFAR-10 images with deep learning
 Gulli, Antonio. Deep Learning with Keras: Implementing deep learning 
 ... (Kindle Locations 1270-1271). Packt Publishing. Kindle Edition. 
 
-env tensorflow: OK. See output snip below.
+env tensorflow: OKAY. 
 env OpenCV:
 env keras:
     
@@ -109,6 +109,10 @@ print("Start Time: ", datetime.time(datetime.now()))
 print("\n\tRecognizing CIFAR-10 images ...\n")
 
 #load dataset
+'''
+load_data() uses keras utility get_file()
+See. https://www.tensorflow.org/api_docs/python/tf/keras/utils/get_file
+'''
 (X_train, y_train), (X_test, y_test) = cifar10.load_data()
 print('X_train shape:', X_train.shape)
 print(X_train.shape[0], 'train samples')

@@ -1,0 +1,28 @@
+
+../anaconda3/envs/tensorflow/lib/python3.6/site-packages/keras/utils/data_utils.py
+---------------------------------------------------------------------------------------
+* Download files (just what I was looking for)
+    * to cache if a dir not specified
+    * only if file not already present.
+    * create directory if not present
+    
+../anaconda3/envs/tensorflow/lib/python3.6/site-packages/keras_applications/vgg16.py
+------------------------------------------------------------------------------------
+* *** Great *** example of function documentation.
+
+../Code-DeepLearningWithKeras/Chapter03/1.keras_CIFAR10_simple.py
+-----------------------------------------------------------------
+* load_data() uses keras utility get_file()
+    See. https://www.tensorflow.org/api_docs/python/tf/keras/utils/get_file
+
+
+/home/rm/Code-DeepLearningWithKeras/Chapter03/3.keras_EvaluateCIFAR10.py
+------------------------------------------------------------------------
+* Reverse sort of list of tuples and zipped lists using index other than index=0 
+#Ref: https://www.programiz.com/python-programming/methods/built-in/sorted
+* Use of lamda function to define the key [, key=lambda x: x[1]]
+* Use comprehension for printing
+
+Command line args
+-----------------
+Code-DeepLearningWithKeras/Chapter04/dcgan.py:156:    parser = argparse.ArgumentParser()
