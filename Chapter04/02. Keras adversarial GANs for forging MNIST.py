@@ -1,3 +1,11 @@
+'''
+Let's see an example of a computation with MNIST:
+
+Gulli, Antonio. Deep Learning with Keras: Implementing deep learning models 
+and neural networks with the power of Python 
+(Kindle Locations 1620-1621). 
+Packt Publishing. Kindle Edition. 
+'''
 import matplotlib as mpl
 
 # This line allows mpl to run with no DISPLAY defined
@@ -21,7 +29,11 @@ from image_utils import dim_ordering_fix, dim_ordering_input, dim_ordering_resha
 def leaky_relu(x):
     return K.relu(x, 0.2)
 
-
+#def model_generator():
+#Gulli, Antonio. Deep Learning with Keras: Implementing deep learning models 
+#and neural networks with the power of Python
+# (Kindle Location 1654). 
+# Packt Publishing. Kindle Edition. 
 def model_generator():
     nch = 256
     g_input = Input(shape=[100])
@@ -40,7 +52,11 @@ def model_generator():
     g_V = Activation('sigmoid')(H)
     return Model(g_input, g_V)
 
-
+#def model_discriminator(input_shape=(1, 28, 28), dropout_rate=0.5):
+#Gulli, Antonio. Deep Learning with Keras: Implementing deep learning models 
+#and neural networks with the power of Python 
+#(Kindle Locations 1664-1665). 
+#Packt Publishing. Kindle Edition. 
 def model_discriminator(input_shape=(1, 28, 28), dropout_rate=0.5):
     d_input = dim_ordering_input(input_shape, name="input_x")
     nch = 512
@@ -58,7 +74,11 @@ def model_discriminator(input_shape=(1, 28, 28), dropout_rate=0.5):
     d_V = Dense(1, activation='sigmoid')(H)
     return Model(d_input, d_V)
 
-
+#two simple functions for loading and normalizing MNIST data are defined:
+#Gulli, Antonio. Deep Learning with Keras: Implementing deep learning models 
+#and neural networks with the power of Python 
+#(Kindle Locations 1671-1672). 
+#Packt Publishing. Kindle Edition. 
 def mnist_process(x):
     x = x.astype(np.float32) / 255.0
     return x
@@ -68,7 +88,11 @@ def mnist_data():
     (xtrain, ytrain), (xtest, ytest) = mnist.load_data()
     return mnist_process(xtrain), mnist_process(xtest)
 
-
+#The generator for creating new images that look like real ones is defined.
+#Gulli, Antonio. Deep Learning with Keras: Implementing deep learning models 
+#and neural networks with the power of Python 
+#(Kindle Location 1689). 
+#Packt Publishing. Kindle Edition. 
 def generator_sampler(latent_dim, generator):
     def fun():
         zsamples = np.random.normal(size=(10 * 10, latent_dim))

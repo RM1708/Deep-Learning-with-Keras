@@ -13,6 +13,8 @@ from PIL import Image
 import argparse
 import math
 
+#Keras: Implementing deep learning models and neural networks 
+#with the power of Python (Kindle Location 1564). 
 
 def generator_model():
     model = Sequential()
@@ -30,13 +32,18 @@ def generator_model():
     model.add(Activation('tanh'))
     return model
 
-
+#def discriminator_model():
+#Gulli, Antonio. Deep Learning with Keras: 
+#    Implementing deep learning models and neural networks 
+#    with the power of Python (Kindle Location 1585). 
+#    Packt Publishing. Kindle Edition. 
 def discriminator_model():
     model = Sequential()
     model.add(Convolution2D(
                         64, 5, 5,
                         border_mode='same',
-                        input_shape=(1, 28, 28)))
+#                        input_shape=(1, 28, 28))) #This is for Theano
+                        input_shape=(28, 28, 1)))
     model.add(Activation('tanh'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Convolution2D(128, 5, 5))
@@ -164,6 +171,10 @@ def get_args():
 if __name__ == "__main__":
     args = get_args()
     if args.mode == "train":
+        print("Training ...")
         train(BATCH_SIZE=args.batch_size)
     elif args.mode == "generate":
+        print("Generating ..")
         generate(BATCH_SIZE=args.batch_size, nice=args.nice)
+    
+    print("\n\tDONE: ", __file__)
