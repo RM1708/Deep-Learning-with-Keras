@@ -30,6 +30,8 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
+from datetime import datetime
+
 np.random.seed(1671)  # for reproducibility
 
 #define the convnet 
@@ -56,6 +58,8 @@ class LeNet:
 		model.add(Activation("softmax"))
 
 		return model
+
+print("Starting at: ", datetime.time(datetime.now()))
 
 # network and training
 NB_EPOCH = 5  #20
@@ -121,5 +125,7 @@ plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
 plt.show()
+
+print("Ended at: ", datetime.time(datetime.now()))
 
 print("\n\tDONE: ", __file__)

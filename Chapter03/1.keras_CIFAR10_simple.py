@@ -104,9 +104,18 @@ VALIDATION_SPLIT = 0.2
 OPTIM = RMSprop()
 #OPTIM = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
 
-print("Start Time: ", datetime.time(datetime.now()))
+OPTIM_SEL = "ADAM" # "RMS", "SGD", "ADAM"
+if("SGD" == OPTIM_SEL):
+    OPTIM = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+elif("ADAM" == OPTIM_SEL):
+    OPTIM = Adam()   
+else:
+    OPTIM = RMSprop()
 
-print("\n\tRecognizing CIFAR-10 images ...\n")
+
+print("\n\tStart time: ", datetime.time(datetime.now()), "\n")
+
+print("\n\tLoading CIFAR-10 images ...\n")
 
 #load dataset
 '''
@@ -171,6 +180,7 @@ model.add(Dropout(0.25))
 model.add(Flatten())
 model.add(Dense(512))
 model.add(Activation('relu'))
+
 model.add(Dropout(0.5))
 model.add(Dense(NB_CLASSES))
 model.add(Activation('softmax'))
@@ -179,6 +189,8 @@ model.summary()
 
 
 # train
+print("Optimizer to be used: ", OPTIM_SEL )
+
 print("\nCompiling model ...")
 model.compile(loss='categorical_crossentropy', optimizer=OPTIM,
 	metrics=['accuracy'])
@@ -222,6 +234,6 @@ plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
 plt.show()
 
-print("End Time: ", datetime.time(datetime.now()))
+print("\n\tEnd time: ", datetime.time(datetime.now()), "\n")
 
 print("\n\tDONE: ", __file__)

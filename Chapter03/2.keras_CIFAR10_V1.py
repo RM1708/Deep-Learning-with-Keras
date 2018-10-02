@@ -41,7 +41,16 @@ VERBOSE = 1
 VALIDATION_SPLIT = 0.2
 OPTIM = RMSprop()
 
-print("Start Time: ", datetime.time(datetime.now()))
+OPTIM_SEL = "ADAM" # "RMS", "SGD", "ADAM"
+if("SGD" == OPTIM_SEL):
+    OPTIM = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+elif("ADAM" == OPTIM_SEL):
+    OPTIM = Adam()   
+else:
+    OPTIM = RMSprop()
+
+
+print("\nStart Time: ", datetime.time(datetime.now()), "\n")
 #load dataset
 print("Loading CIFAR10 dataset ...")
 (X_train, y_train), (X_test, y_test) = cifar10.load_data()
@@ -65,19 +74,19 @@ X_test /= 255
 print("Sequential construction of network ...")
 model = Sequential()    #https://www.tensorflow.org/api_docs/python/tf/keras/Sequential
  
-model.add(Conv2D(32, kernel_size=3, padding='same',
+model.add(Conv2D(32, (3, 3), padding='same',
                         input_shape=(IMG_ROWS, IMG_COLS, IMG_CHANNELS)))
 model.add(Activation('relu'))
 
-model.add(Conv2D(32, kernel_size=3, padding='same'))
+model.add(Conv2D(32, (3, 3), padding='same'))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
  
-model.add(Conv2D(64, kernel_size=3, padding='same'))
+model.add(Conv2D(64, (3, 3), padding='same'))
 model.add(Activation('relu'))
 
-model.add(Conv2D(64, 3, 3))
+model.add(Conv2D(64, (3, 3)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
@@ -91,9 +100,18 @@ model.add(Activation('softmax'))
 
 model.summary()
 
+print("Optimizer to be used: ", OPTIM_SEL )
 print("Compiling the model ..")
-model.compile(loss='categorical_crossentropy', optimizer=OPTIM,
-	metrics=['accuracy'])
+# https://www.tensorflow.org/api_docs/python/tf/keras/Sequential#compile
+model.compile( \
+            loss='categorical_crossentropy', \
+            # https://www.tensorflow.org/api_docs/python/tf/keras/losses/categorical_crossentropy
+            # https://www.tensorflow.org/api_docs/python/tf/keras/backend/categorical_crossentropy
+            # https://keras.io/losses/#usage-of-loss-functions
+              optimizer=OPTIM, \
+              metrics=['accuracy']
+              #https://keras.io/metrics/#available-metrics
+              )
 
 # train
 print("Training ...") 
@@ -127,10 +145,14 @@ else:
     #See (Kindle Locations 1348-1349). 
     # 
     #https://www.tensorflow.org/api_docs/python/tf/keras/Sequential#fit_generator
-    history = model.fit_generator(datagen.flow(X_train, Y_train,
-                            batch_size=BATCH_SIZE),
-                            samples_per_epoch=X_train.shape[0],
-                            nb_epoch=NB_EPOCH, 
+    NO_OF_TRAIN_SAMPLES = int(X_train.shape[0] * (1 - VALIDATION_SPLIT))
+    history = model.fit_generator(datagen.flow(X_train[: NO_OF_TRAIN_SAMPLES], \
+                                               Y_train[: NO_OF_TRAIN_SAMPLES], \
+                            batch_size=BATCH_SIZE), \
+                            samples_per_epoch=NO_OF_TRAIN_SAMPLES, \
+                            nb_epoch=NB_EPOCH, \
+                            validation_data=(X_train[NO_OF_TRAIN_SAMPLES :], \
+                                               Y_train[NO_OF_TRAIN_SAMPLES :]), \
                             verbose=VERBOSE)
     
     #server.launch(model)
@@ -156,9 +178,8 @@ else:
 print(history.history.keys())
 # summarize history for accuracy
 plt.plot(history.history['acc'])
-if(not AUGMENTATION):
+if(True or (not AUGMENTATION)):
     plt.plot(history.history['val_acc'])
-    
 plt.title('model accuracy')
 plt.ylabel('accuracy')
 plt.xlabel('epoch')
@@ -166,9 +187,8 @@ plt.legend(['train', 'test'], loc='upper left')
 plt.show()
 # summarize history for loss
 plt.plot(history.history['loss'])
-if(not AUGMENTATION):
+if(True or (not AUGMENTATION)):
     plt.plot(history.history['val_loss'])
-    
 plt.title('model loss')
 plt.ylabel('loss')
 plt.xlabel('epoch')
